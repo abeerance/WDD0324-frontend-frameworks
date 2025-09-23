@@ -3,34 +3,72 @@
 import { cn } from "@/lib/utils";
 import type { ButtonHTMLAttributes } from "react";
 
-// here we create an interface called ButtonProps
-// the ButtonProps interface extends the already existing methods and properties of the ButtonHTMLAttributes<HTMLButtonElement>, without that we could not access children, onClick, etc. out of the box
+/**
+ * Interface for Button component props
+ *
+ * Extends ButtonHTMLAttributes to inherit all native button properties:
+ * - Event handlers: onClick, onMouseOver, onFocus, etc.
+ * - Accessibility: aria-label, aria-describedby, role, etc.
+ * - Form properties: disabled, form, formAction, etc.
+ * - Standard HTML attributes: id, data-*, className, etc.
+ */
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	variant?: "primary" | "secondary" | "ghost" | "destructive"; // here we add the additional property variant, which does not exist yet as a base attribute of a button
+	/**
+	 * Visual style variant for the button
+	 * - primary: Main call-to-action, cyan background
+	 * - secondary: Secondary action, amber background
+	 * - ghost: Text-only style with underline, no background
+	 * - destructive: Dangerous actions, red background for warnings/deletions
+	 */
+	variant?: "primary" | "secondary" | "ghost" | "destructive";
 }
 
+/**
+ * Reusable Button component with consistent styling and behavior
+ *
+ * Features:
+ * - Multiple visual variants for different use cases
+ * - Accessible by default (proper button semantics)
+ * - Fully customizable via className prop
+ * - Inherits all native button functionality
+ */
 export const Button = ({
-	variant,
-	children,
-	type = "button",
-	className,
-	...props
+	variant, // Visual style variant
+	children, // Button content (text, icons, etc.)
+	type = "button", // Default to "button" to prevent form submission
+	className, // Additional CSS classes for customization
+	...props // All other button props (onClick, disabled, etc.)
 }: ButtonProps) => {
 	return (
 		<button
 			type={type}
 			className={cn(
-				"rounded-md cursor-pointer inline-flex items-center justify-center px-2 py-1.5 transition-all duration-300",
+				// Base styles applied to all button variants
+				"rounded-md cursor-pointer inline-flex items-center justify-center px-s py-xs transition-all duration-300 text-headline-5 font-semibold",
+
+				// Primary variant: Main call-to-action button
+				// Cyan background with opacity for subtle transparency
 				variant === "primary" &&
 					"bg-cyan-900/90 text-gray-100 hover:bg-cyan-900/75",
+
+				// Secondary variant: Secondary actions
+				// Amber background, often used for less important actions
 				variant === "secondary" &&
 					"bg-amber-700/90 text-gray-100 hover:bg-amber-700/75",
+
+				// Ghost variant: Minimal style for subtle actions
+				// No background, just underlined text
 				variant === "ghost" && "text-gray-900 underline",
+
+				// Destructive variant: Dangerous/warning actions
+				// Red background to signal caution (delete, remove, etc.)
 				variant === "destructive" &&
 					"bg-red-500/90 text-gray-100 hover:bg-red-700/75",
+
+				// Custom classes passed via props (highest specificity)
 				className,
 			)}
-			{...props}
+			{...props} // Spread all remaining props to native button element
 		>
 			{children}
 		</button>

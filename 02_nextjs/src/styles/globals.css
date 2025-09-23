@@ -1,26 +1,251 @@
+/**
+ * Import Tailwind CSS base styles, components, and utilities
+ * This must be the first import to ensure proper CSS cascade
+ */
 @import "tailwindcss";
 
+/**
+ * CSS Custom Properties (CSS Variables) - Global Scope
+ *
+ * Defines base theme variables that can be dynamically changed
+ * (e.g., for dark/light mode switching or user preferences)
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	/* Primary background color for the application */
+	--background: #0c0d0e;
+
+	/* Primary text/foreground color for readability */
+	--foreground: #f7f7f7;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/**
+ * Tailwind CSS v4 Theme Configuration
+ *
+ * Extends Tailwind's default theme with custom design tokens
+ * These variables become available as Tailwind utility classes
+ * (e.g., bg-neutral-60, text-headline-1, p-s, etc.)
+ */
+@theme {
+	/* 
+	 * Semantic color mappings
+	 * Maps generic names to specific color values for easier theming
+	 */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+	/*
+	 * Neutral color palette (grayscale)
+	 * 0 = darkest (black), 100 = lightest (white)
+	 * Used for text, backgrounds, borders, and UI elements
+	 * Provides consistent contrast ratios across the design system
+	 */
+	--color-neutral-0: #000000; /* Pure black */
+	--color-neutral-10: #1a1a1a; /* Very dark gray */
+	--color-neutral-20: #333333; /* Dark gray */
+	--color-neutral-30: #4d4d4d; /* Medium-dark gray */
+	--color-neutral-40: #666666; /* Medium gray */
+	--color-neutral-50: #858585; /* Mid gray */
+	--color-neutral-60: #a3a3a3; /* Medium-light gray (default text) */
+	--color-neutral-70: #c2c2c2; /* Light gray */
+	--color-neutral-80: #e0e0e0; /* Very light gray */
+	--color-neutral-90: #ededed; /* Near white */
+	--color-neutral-95: #f2f2f2; /* Almost white */
+	--color-neutral-98: #f7f7f7; /* Foreground color */
+	--color-neutral-100: #ffffff; /* Pure white */
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	/*
+	 * Yellow color palette
+	 * Used for warnings, highlights, or accent colors
+	 * Ranges from dark amber to light cream tones
+	 */
+	--color-yellow-0: #140e00; /* Deep brown-yellow */
+	--color-yellow-10: #3b2a00; /* Dark amber */
+	--color-yellow-20: #624600; /* Medium amber */
+	--color-yellow-30: #896100; /* Warm amber */
+	--color-yellow-40: #b17d00; /* Bright amber */
+	--color-yellow-50: #d89900; /* Pure amber */
+	--color-yellow-60: #ffb500; /* Bright yellow */
+	--color-yellow-70: #ffc027; /* Light yellow */
+	--color-yellow-80: #ffcc4e; /* Pale yellow */
+	--color-yellow-90: #ffd776; /* Very pale yellow */
+	--color-yellow-95: #ffe39d; /* Cream yellow */
+	--color-yellow-98: #ffeec4; /* Light cream */
+	--color-yellow-100: #fff9eb; /* Pale cream */
+
+	/*
+	 * Green color palette
+	 * Used for success states, positive actions, or nature themes
+	 * Ranges from deep forest green to light mint tones
+	 */
+	--color-green-0: #0a0f05; /* Very dark green */
+	--color-green-10: #1d2d0e; /* Dark forest green */
+	--color-green-20: #304b17; /* Forest green */
+	--color-green-30: #436920; /* Medium forest green */
+	--color-green-40: #568729; /* Bright forest green */
+	--color-green-50: #68a432; /* Vibrant green */
+	--color-green-60: #7cc33c; /* Bright green */
+	--color-green-70: #90cd5a; /* Light green */
+	--color-green-80: #a4d678; /* Pale green */
+	--color-green-90: #b8df96; /* Very pale green */
+	--color-green-95: #cde8b4; /* Light mint */
+	--color-green-98: #e1f1d2; /* Very light mint */
+	--color-green-100: #f5faf0; /* Pale mint */
+
+	/*
+	 * Red color palette
+	 * Used for errors, destructive actions, or urgent states
+	 * Ranges from deep crimson to light pink tones
+	 */
+	--color-red-0: #120103; /* Very dark red */
+	--color-red-10: #370408; /* Dark crimson */
+	--color-red-20: #5b070e; /* Crimson */
+	--color-red-30: #7f0a13; /* Medium crimson */
+	--color-red-40: #a40d19; /* Bright crimson */
+	--color-red-50: #c8101f; /* Vibrant red */
+	--color-red-60: #ec1324; /* Bright red */
+	--color-red-70: #ef3746; /* Light red */
+	--color-red-80: #f25b67; /* Pale red */
+	--color-red-90: #f58089; /* Very pale red */
+	--color-red-95: #f8a4ab; /* Light pink */
+	--color-red-98: #fbc8cc; /* Very light pink */
+	--color-red-100: #feedee; /* Pale pink */
+
+	/*
+	 * Blue color palette  
+	 * Used for information, links, or primary brand colors
+	 * Ranges from deep navy to light sky blue tones
+	 */
+	--color-blue-0: #040a0f; /* Very dark blue */
+	--color-blue-10: #0d1d2d; /* Dark navy */
+	--color-blue-20: #16304c; /* Navy */
+	--color-blue-30: #1f436a; /* Medium navy */
+	--color-blue-40: #285689; /* Bright navy */
+	--color-blue-50: #3777bc; /* Vibrant blue */
+	--color-blue-60: #3a7dc5; /* Bright blue */
+	--color-blue-70: #5891ce; /* Light blue */
+	--color-blue-80: #76a5d7; /* Pale blue */
+	--color-blue-90: #95b9e0; /* Very pale blue */
+	--color-blue-95: #b3cde9; /* Light sky blue */
+	--color-blue-98: #d1e1f2; /* Very light sky blue */
+	--color-blue-100: #f0f5fb; /* Pale sky blue */
+
+	/*
+	 * Responsive Spacing Scale
+	 * 
+	 * Uses clamp() for fluid spacing that scales with viewport size
+	 * Format: clamp(min-size, preferred-size, max-size)
+	 * - min-size: minimum value at smallest screens
+	 * - preferred-size: fluid calculation based on viewport width (vw)
+	 * - max-size: maximum value at largest screens
+	 * 
+	 * This creates a spacing system that feels natural across all device sizes
+	 */
+	--spacing: 0.25rem; /* Base Tailwind spacing unit (equivalent to spacing-1) */
+
+	--spacing-3xs: clamp(0.1875rem, 0.1658rem + 0.1087vw, 0.25rem); /* 3px - 4px */
+	--spacing-2xs: clamp(0.375rem, 0.3533rem + 0.1087vw, 0.4375rem); /* 6px - 7px */
+	--spacing-xs: clamp(0.5625rem, 0.519rem + 0.2174vw, 0.6875rem); /* 9px - 11px */
+	--spacing-s: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
+	--spacing-m: clamp(1.125rem, 1.0598rem + 0.3261vw, 1.3125rem); /* 18px - 21px */
+	--spacing-l: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
+	--spacing-xl: clamp(2.25rem, 2.1196rem + 0.6522vw, 2.625rem); /* 36px - 42px */
+	--spacing-2xl: clamp(3rem, 2.8261rem + 0.8696vw, 3.5rem); /* 48px - 56px */
+	--spacing-3xl: clamp(4.5rem, 4.2391rem + 1.3043vw, 5.25rem); /* 72px - 84px */
+
+	/*
+	 * Responsive Typography Scale
+	 * 
+	 * Font sizes that scale fluidly with viewport size
+	 * Creates a consistent typographic hierarchy across all devices
+	 * Follows a modular scale for harmonious size relationships
+	 */
+	--text-body-small: clamp(0.625rem, 0.5989rem + 0.1304vw, 0.7rem); /* 10px - 11.2px */
+	--text-body: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
+	--text-headline-5: clamp(0.9rem, 0.8326rem + 0.337vw, 1.0938rem); /* 14.4px - 17.5px */
+	--text-headline-4: clamp(1.08rem, 0.9801rem + 0.4995vw, 1.3672rem); /* 17.28px - 21.88px */
+	--text-headline-3: clamp(1.296rem, 1.1524rem + 0.7182vw, 1.709rem); /* 20.74px - 27.34px */
+	--text-headline-2: clamp(1.5552rem, 1.3531rem + 1.0105vw, 2.1362rem); /* 24.88px - 34.18px */
+	--text-headline-1: clamp(1.8662rem, 1.5866rem + 1.3983vw, 2.6703rem); /* 29.86px - 42.73px */
+
+	/*
+	 * Responsive Line Heights
+	 * 
+	 * Line heights that scale proportionally with font sizes
+	 * Ensures optimal readability across all viewport sizes
+	 * Generally follows 1.5x font size for body text, tighter for headlines
+	 */
+	--text-body-small--line-height: clamp(
+		0.9375rem,
+		0.8984rem +
+		0.1957vw,
+		1.05rem
+	); /* 15px - 16.8px */
+	--text-body--line-height: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
+	--text-headline-5--line-height: clamp(
+		1.08rem,
+		0.9991rem +
+		0.4043vw,
+		1.3125rem
+	); /* 17.28px - 21px */
+	--text-headline-4--line-height: clamp(
+		1.29625rem,
+		1.1762rem +
+		0.6vw,
+		1.64125rem
+	); /* 20.74px - 26.26px */
+	--text-headline-3--line-height: clamp(
+		1.555625rem,
+		1.3835rem +
+		0.8609vw,
+		2.050625rem
+	); /* 24.89px - 32.81px */
+	--text-headline-2--line-height: clamp(
+		1.86625rem,
+		1.6236rem +
+		1.213vw,
+		2.56375rem
+	); /* 29.86px - 41.02px */
+	--text-headline-1--line-height: clamp(
+		2.239375rem,
+		1.9039rem +
+		1.6772vw,
+		3.20375rem
+	); /* 35.83px - 51.26px */
+
+	/*
+ * Animation Easing Functions
+ * 
+ * Custom cubic-bezier curves for smooth, natural animations
+ * Provides variety beyond Tailwind's default easing options
+ * 
+ * Usage in Tailwind classes:
+ * - ease-[--ease-out-quart] → transition-timing-function: var(--ease-out-quart);
+ * - ease-[--ease-in-cubic] → transition-timing-function: var(--ease-in-cubic);
+ * 
+ * Example: transition-all duration-300 ease-[--ease-out-quart]
+ */
+
+	/* Ease In - Slow start, fast finish */
+	--ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53); /* Gentle acceleration */
+	--ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19); /* Medium acceleration */
+	--ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22); /* Strong acceleration */
+	--ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06); /* Very strong acceleration */
+	--ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035); /* Exponential acceleration */
+	--ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335); /* Circular acceleration */
+
+	/* Ease Out - Fast start, slow finish */
+	--ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Gentle deceleration */
+	--ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1); /* Medium deceleration */
+	--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1); /* Strong deceleration (popular) */
+	--ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1); /* Very strong deceleration */
+	--ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); /* Exponential deceleration */
+	--ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1); /* Circular deceleration */
+
+	/* Ease In Out - Slow start and finish, fast middle */
+	--ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* Gentle S-curve */
+	--ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1); /* Medium S-curve */
+	--ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1); /* Strong S-curve */
+	--ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1); /* Very strong S-curve */
+	--ease-in-out-expo: cubic-bezier(1, 0, 0, 1); /* Exponential S-curve */
+	--ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86); /* Circular S-curve */
 }
