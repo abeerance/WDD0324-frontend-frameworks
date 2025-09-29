@@ -33,7 +33,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * - Inherits all native button functionality
  */
 export const Button = ({
-	variant, // Visual style variant
+	variant = "primary", // Visual style variant
 	children, // Button content (text, icons, etc.)
 	type = "button", // Default to "button" to prevent form submission
 	className, // Additional CSS classes for customization
