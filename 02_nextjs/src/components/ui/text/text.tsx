@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Component, type HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 
 // Define union type for all HTML elements this component can render as
 // Restricts to semantic text elements to maintain component purpose
