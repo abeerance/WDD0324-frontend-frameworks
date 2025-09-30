@@ -1,3 +1,4 @@
+import { CounterCard } from "@/components/counter-card/counter-card";
 import { UserProfile } from "@/components/features/user/user-profile";
 import { Text } from "@/components/ui/text/text";
 
@@ -83,6 +84,7 @@ const products: Product[] = [
 export default function Home() {
 	return (
 		<div className="max-w-6xl mx-auto space-y-3xl">
+			<CounterCard />
 			{/* USER PROFILE SECTION */}
 			<section>
 				<Text
