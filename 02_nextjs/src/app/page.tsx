@@ -1,5 +1,6 @@
 import { CounterCard } from "@/components/counter-card/counter-card";
 import { UserProfile } from "@/components/features/user/user-profile";
+import { ToggleCard } from "@/components/toggle-card/toggle-card";
 import { Text } from "@/components/ui/text/text";
 
 export interface User {
@@ -85,6 +86,7 @@ export default function Home() {
 	return (
 		<div className="max-w-6xl mx-auto space-y-3xl">
 			<CounterCard />
+			<ToggleCard />
 			{/* USER PROFILE SECTION */}
 			<section>
 				<Text
