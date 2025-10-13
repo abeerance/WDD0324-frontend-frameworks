@@ -5,20 +5,6 @@
 @import "tailwindcss";
 
 /**
- * CSS Custom Properties (CSS Variables) - Global Scope
- *
- * Defines base theme variables that can be dynamically changed
- * (e.g., for dark/light mode switching or user preferences)
- */
-:root {
-	/* Primary background color for the application */
-	--background: #0c0d0e;
-
-	/* Primary text/foreground color for readability */
-	--foreground: #f7f7f7;
-}
-
-/**
  * Tailwind CSS v4 Theme Configuration
  *
  * Extends Tailwind's default theme with custom design tokens
@@ -27,11 +13,94 @@
  */
 @theme {
 	/* 
+	 * Font mapping
+	 * Maps the font added to the HTML body to tailwind variable
+	 */
+	--font-general-sans: var(--font-general-sans);
+	--font-cabinet-grotesk: var(--font-cabinet-grotesk);
+
+	/* 
 	 * Semantic color mappings
 	 * Maps generic names to specific color values for easier theming
 	 */
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
+
+	/* foreground color */
+	--color-foreground-50: oklch(0.558 0.01 248.0);
+	--color-foreground-100: oklch(0.508 0.009 248.0);
+	--color-foreground-200: oklch(0.457 0.008 248.0);
+	--color-foreground-300: oklch(0.406 0.007 248.0);
+	--color-foreground-400: oklch(0.355 0.006 248.0);
+	--color-foreground-500: oklch(0.304 0.005 248.0);
+	--color-foreground-600: oklch(0.253 0.004 248.0);
+	--color-foreground-700: oklch(0.203 0.003 248.0);
+	--color-foreground-800: oklch(0.152 0.003 248.0);
+	--color-foreground-900: oklch(0.101 0.002 248.0);
+	--color-foreground-950: oklch(0.05 0.001 248.0);
+
+	/* background color */
+	--color-background-50: oklch(0.95 0.0 0.0);
+	--color-background-100: oklch(0.915 0.0 0.0);
+	--color-background-200: oklch(0.88 0.0 0.0);
+	--color-background-300: oklch(0.845 0.0 0.0);
+	--color-background-400: oklch(0.81 0.0 0.0);
+	--color-background-500: oklch(0.775 0.0 0.0);
+	--color-background-600: oklch(0.74 0.0 0.0);
+	--color-background-700: oklch(0.705 0.0 0.0);
+	--color-background-800: oklch(0.67 0.0 0.0);
+	--color-background-900: oklch(0.635 0.0 0.0);
+	--color-background-950: oklch(0.6 0.0 0.0);
+
+	/* SAGE GREEN - Primary Color */
+	--color-primary-50: oklch(0.95 0.015 156.3);
+	--color-primary-100: oklch(0.89 0.037 156.3);
+	--color-primary-200: oklch(0.83 0.039 156.3);
+	--color-primary-300: oklch(0.77 0.036 156.3);
+	--color-primary-400: oklch(0.71 0.033 156.3);
+	--color-primary-500: oklch(0.65 0.03 156.3);
+	--color-primary-600: oklch(0.59 0.027 156.3);
+	--color-primary-700: oklch(0.53 0.025 156.3);
+	--color-primary-800: oklch(0.47 0.022 156.3);
+	--color-primary-900: oklch(0.41 0.019 156.3);
+	--color-primary-950: oklch(0.35 0.016 156.3);
+
+	/* DUSTY ROSE - Secondary Color */
+	--color-secondary-50: oklch(0.95 0.01 18.4);
+	--color-secondary-100: oklch(0.892 0.023 18.4);
+	--color-secondary-200: oklch(0.833 0.037 18.4);
+	--color-secondary-300: oklch(0.775 0.053 18.4);
+	--color-secondary-400: oklch(0.716 0.071 18.4);
+	--color-secondary-500: oklch(0.658 0.092 18.4);
+	--color-secondary-600: oklch(0.599 0.096 18.4);
+	--color-secondary-700: oklch(0.541 0.086 18.4);
+	--color-secondary-800: oklch(0.482 0.077 18.4);
+	--color-secondary-900: oklch(0.424 0.068 18.4);
+	--color-secondary-950: oklch(0.365 0.058 18.4);
+
+	/* MUSTARD YELLOW - Accent Color */
+	--color-accent-50: oklch(0.95 0.041 88.3);
+	--color-accent-100: oklch(0.898 0.085 88.3);
+	--color-accent-200: oklch(0.847 0.12 88.3);
+	--color-accent-300: oklch(0.795 0.113 88.3);
+	--color-accent-400: oklch(0.743 0.106 88.3);
+	--color-accent-500: oklch(0.691 0.098 88.3);
+	--color-accent-600: oklch(0.64 0.091 88.3);
+	--color-accent-700: oklch(0.588 0.084 88.3);
+	--color-accent-800: oklch(0.536 0.076 88.3);
+	--color-accent-900: oklch(0.485 0.069 88.3);
+	--color-accent-950: oklch(0.433 0.062 88.3);
+
+	/* POWDER BLUE - Tertiary Color */
+	--color-tertiary-50: oklch(0.95 0.01 223.0);
+	--color-tertiary-100: oklch(0.896 0.022 223.0);
+	--color-tertiary-200: oklch(0.842 0.033 223.0);
+	--color-tertiary-300: oklch(0.788 0.045 223.0);
+	--color-tertiary-400: oklch(0.734 0.042 223.0);
+	--color-tertiary-500: oklch(0.68 0.039 223.0);
+	--color-tertiary-600: oklch(0.625 0.036 223.0);
+	--color-tertiary-700: oklch(0.571 0.033 223.0);
+	--color-tertiary-800: oklch(0.517 0.029 223.0);
+	--color-tertiary-900: oklch(0.463 0.026 223.0);
+	--color-tertiary-950: oklch(0.409 0.023 223.0);
 
 	/*
 	 * Responsive Spacing Scale

@@ -36,6 +36,12 @@ const customTwMerge = extendTailwindMerge({
        * Used for padding, margins, gaps, etc. throughout the design system
        */
       spacing: ["3xs", "2xs", "xs", "s", "m", "l", "xl"],
+
+      /**
+       * Custom color scale values
+       * All custom color shades for foreground, background, and semantic colors
+       */
+      color: ["foreground", "background", "primary", "secondary", "accent", "tertiary"],
     },
 
     /**
@@ -58,13 +64,17 @@ const customTwMerge = extendTailwindMerge({
         "body",
         "body-small",
       ],
-
       /**
        * Gap class group for flexbox/grid spacing
        * Handles custom spacing values in gap utilities
        * Ensures consistent spacing behavior with custom tokens
        */
       gap: [{ gap: ["3xs", "2xs", "xs", "s", "m", "l", "xl"] }],
+      /**
+       * Font-Family class group for
+       * Handles custom fonts which we are using in our webapp
+       */
+      "font-family": [{ font: ["general-sans", "cabinet-grotesk"] }],
     },
   },
 });
