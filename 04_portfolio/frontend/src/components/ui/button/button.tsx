@@ -53,12 +53,12 @@ export const Button = ({
         // Primary variant: Main call-to-action button
         // Sage green background - calm, natural, professional
         variant === "primary" &&
-          "bg-primary-700 text-white hover:bg-primary-500 active:bg-primary-700  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
+          "bg-primary-700 text-white hover:bg-primary-500 active:bg-primary-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
 
         // Secondary variant: Secondary actions
         // Dusty rose background - soft, approachable, warm
         variant === "secondary" &&
-          "bg-secondary-600 text-white hover:bg-secondary-500 active:bg-secondary-700  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-500",
+          "bg-secondary-600 text-white hover:bg-secondary-500 active:bg-secondary-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-500",
 
         // Accent variant: Attention-grabbing actions
         // Mustard yellow background - energetic, optimistic, highlights CTAs
@@ -73,7 +73,7 @@ export const Button = ({
         // Outline variant: Border style with transparent background
         // Subtle border, fills on hover for nice interaction
         variant === "outline" &&
-          "border-2 border-primary-500 text-primary-700 hover:bg-primary-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
+          "border-2 border-primary-500 text-primary-700 active:bg-primary-800 hover:bg-primary-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
 
         // Custom classes passed via props (highest specificity)
         className
