@@ -65,9 +65,14 @@ export const Input = ({
 				// Shadow for depth
 				"shadow-sm",
 
+				// Prevent browser extension overflow
+				"relative z-0",
+
 				// Custom classes from props
 				className,
 			)}
+			data-1p-ignore
+			data-lpignore="true"
 			{...props}
 		/>
 	);

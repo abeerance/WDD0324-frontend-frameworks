@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import * as FormPrimitive from "@radix-ui/react-form";
-import { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { Button } from "../button/button";
 
 /**
@@ -64,29 +64,30 @@ import { Button } from "../button/button";
  * This approach eliminates the need for asChild at the usage level
  * by baking the Button component directly into FormSubmit
  */
-interface FormSubmitProps extends ComponentPropsWithoutRef<typeof FormPrimitive.Submit> {
-  /**
-   * Button visual variant from design system
-   *
-   * - "primary": Sage green background, main call-to-action
-   * - "secondary": Dusty rose background, secondary actions
-   * - "accent": Mustard yellow background, attention-grabbing
-   * - "ghost": No background, minimal text-only style
-   * - "outline": Border style with transparent background
-   *
-   * Default: undefined (Button component's default is "primary")
-   */
-  buttonVariant?: "primary" | "secondary" | "accent" | "ghost" | "outline";
+interface FormSubmitProps
+	extends ComponentPropsWithoutRef<typeof FormPrimitive.Submit> {
+	/**
+	 * Button visual variant from design system
+	 *
+	 * - "primary": Sage green background, main call-to-action
+	 * - "secondary": Dusty rose background, secondary actions
+	 * - "accent": Mustard yellow background, attention-grabbing
+	 * - "ghost": No background, minimal text-only style
+	 * - "outline": Border style with transparent background
+	 *
+	 * Default: undefined (Button component's default is "primary")
+	 */
+	buttonVariant?: "primary" | "secondary" | "accent" | "ghost" | "outline";
 
-  /**
-   * Additional CSS classes applied to the Button component
-   *
-   * Merged with Button's base styles using cn() utility
-   * Useful for layout adjustments like width, margins, etc.
-   *
-   * Example: buttonClassName="w-full mt-4"
-   */
-  buttonClassName?: string;
+	/**
+	 * Additional CSS classes applied to the Button component
+	 *
+	 * Merged with Button's base styles using cn() utility
+	 * Useful for layout adjustments like width, margins, etc.
+	 *
+	 * Example: buttonClassName="w-full mt-4"
+	 */
+	buttonClassName?: string;
 }
 
 /**
@@ -112,17 +113,17 @@ interface FormSubmitProps extends ComponentPropsWithoutRef<typeof FormPrimitive.
  * - Button's existing props (variant, className) work as expected
  */
 export const FormSubmit = ({
-  buttonVariant,
-  buttonClassName,
-  className, // Not used but accepted for API compatibility
-  children,
-  ...props
+	buttonVariant,
+	buttonClassName,
+	className, // Not used but accepted for API compatibility
+	children,
+	...props
 }: FormSubmitProps) => {
-  return (
-    <FormPrimitive.Submit {...props}>
-      <Button type="submit" variant={buttonVariant} className={buttonClassName}>
-        {children}
-      </Button>
-    </FormPrimitive.Submit>
-  );
+	return (
+		<FormPrimitive.Submit {...props} asChild>
+			<Button type="submit" variant={buttonVariant} className={buttonClassName}>
+				{children}
+			</Button>
+		</FormPrimitive.Submit>
+	);
 };
