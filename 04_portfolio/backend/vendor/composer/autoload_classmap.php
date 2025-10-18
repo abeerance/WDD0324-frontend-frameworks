@@ -6,16 +6,14 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Controllers\\ArticlesController' => $baseDir . '/app/Controllers/ArticlesController.php',
     'App\\Controllers\\AuthController' => $baseDir . '/app/Controllers/AuthController.php',
-    'App\\Controllers\\CommentsController' => $baseDir . '/app/Controllers/CommentsController.php',
+    'App\\Controllers\\NotesController' => $baseDir . '/app/Controllers/NotesController.php',
     'App\\Controllers\\TagsController' => $baseDir . '/app/Controllers/TagsController.php',
     'App\\Controllers\\UploadsController' => $baseDir . '/app/Controllers/UploadsController.php',
     'App\\Controllers\\UserController' => $baseDir . '/app/Controllers/UserController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
-    'App\\Models\\Article' => $baseDir . '/app/Models/Article.php',
-    'App\\Models\\Comment' => $baseDir . '/app/Models/Comment.php',
     'App\\Models\\Image' => $baseDir . '/app/Models/Image.php',
+    'App\\Models\\Note' => $baseDir . '/app/Models/Note.php',
     'App\\Models\\Tag' => $baseDir . '/app/Models/Tag.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
