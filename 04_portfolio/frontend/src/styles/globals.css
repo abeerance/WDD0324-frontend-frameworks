@@ -12,97 +12,99 @@
  * (e.g., bg-neutral-60, text-headline-1, p-s, etc.)
  */
 @theme {
-  /*
+	/*
 	 * Font mapping
 	 * Maps the font added to the HTML body to tailwind variable
 	 */
-  --font-general-sans: var(--font-general-sans);
-  --font-cabinet-grotesk: var(--font-cabinet-grotesk);
+	--font-general-sans: var(--font-general-sans);
+	--font-cabinet-grotesk: var(--font-cabinet-grotesk);
 
-  /* 
+	/* 
 	 * Semantic color mappings
 	 * Maps generic names to specific color values for easier theming
 	 */
 
-  /* foreground color */
-  --color-foreground-50: oklch(0.558 0.01 248);
-  --color-foreground-100: oklch(0.508 0.009 248);
-  --color-foreground-200: oklch(0.457 0.008 248);
-  --color-foreground-300: oklch(0.406 0.007 248);
-  --color-foreground-400: oklch(0.355 0.006 248);
-  --color-foreground-500: oklch(0.304 0.005 248);
-  --color-foreground-600: oklch(0.253 0.004 248);
-  --color-foreground-700: oklch(0.203 0.003 248);
-  --color-foreground-800: oklch(0.152 0.003 248);
-  --color-foreground-900: oklch(0.101 0.002 248);
-  --color-foreground-950: oklch(0.05 0.001 248);
+	/* foreground color */
+	--color-foreground-50: oklch(0.558 0.01 248);
+	--color-foreground-100: oklch(0.508 0.009 248);
+	--color-foreground-200: oklch(0.457 0.008 248);
+	--color-foreground-300: oklch(0.406 0.007 248);
+	--color-foreground-400: oklch(0.355 0.006 248);
+	--color-foreground-500: oklch(0.304 0.005 248);
+	--color-foreground-600: oklch(0.253 0.004 248);
+	--color-foreground-700: oklch(0.203 0.003 248);
+	--color-foreground-800: oklch(0.152 0.003 248);
+	--color-foreground-900: oklch(0.101 0.002 248);
+	--color-foreground-950: oklch(0.05 0.001 248);
 
-  /* background color */
-  --color-background-50: oklch(0.95 0 0);
-  --color-background-100: oklch(0.915 0 0);
-  --color-background-200: oklch(0.88 0 0);
-  --color-background-300: oklch(0.845 0 0);
-  --color-background-400: oklch(0.81 0 0);
-  --color-background-500: oklch(0.775 0 0);
-  --color-background-600: oklch(0.74 0 0);
-  --color-background-700: oklch(0.705 0 0);
-  --color-background-800: oklch(0.67 0 0);
-  --color-background-900: oklch(0.635 0 0);
-  --color-background-950: oklch(0.6 0 0);
+	/* background color */
+	--color-background-10: oklch(0.99 0 0);
+	--color-background-25: oklch(0.98 0 0);
+	--color-background-50: oklch(0.95 0 0);
+	--color-background-100: oklch(0.915 0 0);
+	--color-background-200: oklch(0.88 0 0);
+	--color-background-300: oklch(0.845 0 0);
+	--color-background-400: oklch(0.81 0 0);
+	--color-background-500: oklch(0.775 0 0);
+	--color-background-600: oklch(0.74 0 0);
+	--color-background-700: oklch(0.705 0 0);
+	--color-background-800: oklch(0.67 0 0);
+	--color-background-900: oklch(0.635 0 0);
+	--color-background-950: oklch(0.6 0 0);
 
-  /* SAGE GREEN - Primary Color */
-  --color-primary-50: oklch(0.95 0.015 156.3);
-  --color-primary-100: oklch(0.89 0.037 156.3);
-  --color-primary-200: oklch(0.83 0.039 156.3);
-  --color-primary-300: oklch(0.77 0.036 156.3);
-  --color-primary-400: oklch(0.71 0.033 156.3);
-  --color-primary-500: oklch(0.65 0.03 156.3);
-  --color-primary-600: oklch(0.59 0.027 156.3);
-  --color-primary-700: oklch(0.53 0.025 156.3);
-  --color-primary-800: oklch(0.47 0.022 156.3);
-  --color-primary-900: oklch(0.41 0.019 156.3);
-  --color-primary-950: oklch(0.35 0.016 156.3);
+	/* SAGE GREEN - Primary Color */
+	--color-primary-50: oklch(0.95 0.015 156.3);
+	--color-primary-100: oklch(0.89 0.037 156.3);
+	--color-primary-200: oklch(0.83 0.039 156.3);
+	--color-primary-300: oklch(0.77 0.036 156.3);
+	--color-primary-400: oklch(0.71 0.033 156.3);
+	--color-primary-500: oklch(0.65 0.03 156.3);
+	--color-primary-600: oklch(0.59 0.027 156.3);
+	--color-primary-700: oklch(0.53 0.025 156.3);
+	--color-primary-800: oklch(0.47 0.022 156.3);
+	--color-primary-900: oklch(0.41 0.019 156.3);
+	--color-primary-950: oklch(0.35 0.016 156.3);
 
-  /* DUSTY ROSE - Secondary Color */
-  --color-secondary-50: oklch(0.95 0.01 18.4);
-  --color-secondary-100: oklch(0.892 0.023 18.4);
-  --color-secondary-200: oklch(0.833 0.037 18.4);
-  --color-secondary-300: oklch(0.775 0.053 18.4);
-  --color-secondary-400: oklch(0.716 0.071 18.4);
-  --color-secondary-500: oklch(0.658 0.092 18.4);
-  --color-secondary-600: oklch(0.599 0.096 18.4);
-  --color-secondary-700: oklch(0.541 0.086 18.4);
-  --color-secondary-800: oklch(0.482 0.077 18.4);
-  --color-secondary-900: oklch(0.424 0.068 18.4);
-  --color-secondary-950: oklch(0.365 0.058 18.4);
+	/* DUSTY ROSE - Secondary Color */
+	--color-secondary-50: oklch(0.95 0.01 18.4);
+	--color-secondary-100: oklch(0.892 0.023 18.4);
+	--color-secondary-200: oklch(0.833 0.037 18.4);
+	--color-secondary-300: oklch(0.775 0.053 18.4);
+	--color-secondary-400: oklch(0.716 0.071 18.4);
+	--color-secondary-500: oklch(0.658 0.092 18.4);
+	--color-secondary-600: oklch(0.599 0.096 18.4);
+	--color-secondary-700: oklch(0.541 0.086 18.4);
+	--color-secondary-800: oklch(0.482 0.077 18.4);
+	--color-secondary-900: oklch(0.424 0.068 18.4);
+	--color-secondary-950: oklch(0.365 0.058 18.4);
 
-  /* MUSTARD YELLOW - Accent Color */
-  --color-accent-50: oklch(0.95 0.041 88.3);
-  --color-accent-100: oklch(0.898 0.085 88.3);
-  --color-accent-200: oklch(0.847 0.12 88.3);
-  --color-accent-300: oklch(0.795 0.113 88.3);
-  --color-accent-400: oklch(0.743 0.106 88.3);
-  --color-accent-500: oklch(0.691 0.098 88.3);
-  --color-accent-600: oklch(0.64 0.091 88.3);
-  --color-accent-700: oklch(0.588 0.084 88.3);
-  --color-accent-800: oklch(0.536 0.076 88.3);
-  --color-accent-900: oklch(0.485 0.069 88.3);
-  --color-accent-950: oklch(0.433 0.062 88.3);
+	/* MUSTARD YELLOW - Accent Color */
+	--color-accent-50: oklch(0.95 0.041 88.3);
+	--color-accent-100: oklch(0.898 0.085 88.3);
+	--color-accent-200: oklch(0.847 0.12 88.3);
+	--color-accent-300: oklch(0.795 0.113 88.3);
+	--color-accent-400: oklch(0.743 0.106 88.3);
+	--color-accent-500: oklch(0.691 0.098 88.3);
+	--color-accent-600: oklch(0.64 0.091 88.3);
+	--color-accent-700: oklch(0.588 0.084 88.3);
+	--color-accent-800: oklch(0.536 0.076 88.3);
+	--color-accent-900: oklch(0.485 0.069 88.3);
+	--color-accent-950: oklch(0.433 0.062 88.3);
 
-  /* POWDER BLUE - Tertiary Color */
-  --color-tertiary-50: oklch(0.95 0.01 223);
-  --color-tertiary-100: oklch(0.896 0.022 223);
-  --color-tertiary-200: oklch(0.842 0.033 223);
-  --color-tertiary-300: oklch(0.788 0.045 223);
-  --color-tertiary-400: oklch(0.734 0.042 223);
-  --color-tertiary-500: oklch(0.68 0.039 223);
-  --color-tertiary-600: oklch(0.625 0.036 223);
-  --color-tertiary-700: oklch(0.571 0.033 223);
-  --color-tertiary-800: oklch(0.517 0.029 223);
-  --color-tertiary-900: oklch(0.463 0.026 223);
-  --color-tertiary-950: oklch(0.409 0.023 223);
+	/* POWDER BLUE - Tertiary Color */
+	--color-tertiary-50: oklch(0.95 0.01 223);
+	--color-tertiary-100: oklch(0.896 0.022 223);
+	--color-tertiary-200: oklch(0.842 0.033 223);
+	--color-tertiary-300: oklch(0.788 0.045 223);
+	--color-tertiary-400: oklch(0.734 0.042 223);
+	--color-tertiary-500: oklch(0.68 0.039 223);
+	--color-tertiary-600: oklch(0.625 0.036 223);
+	--color-tertiary-700: oklch(0.571 0.033 223);
+	--color-tertiary-800: oklch(0.517 0.029 223);
+	--color-tertiary-900: oklch(0.463 0.026 223);
+	--color-tertiary-950: oklch(0.409 0.023 223);
 
-  /*
+	/*
 	 * Responsive Spacing Scale
 	 * 
 	 * Uses clamp() for fluid spacing that scales with viewport size
@@ -113,73 +115,79 @@
 	 * 
 	 * This creates a spacing system that feels natural across all device sizes
 	 */
-  --spacing: 0.25rem; /* Base Tailwind spacing unit (equivalent to spacing-1) */
+	--spacing: 0.25rem; /* Base Tailwind spacing unit (equivalent to spacing-1) */
 
-  --spacing-3xs: clamp(0.1875rem, 0.1658rem + 0.1087vw, 0.25rem); /* 3px - 4px */
-  --spacing-2xs: clamp(0.375rem, 0.3533rem + 0.1087vw, 0.4375rem); /* 6px - 7px */
-  --spacing-xs: clamp(0.5625rem, 0.519rem + 0.2174vw, 0.6875rem); /* 9px - 11px */
-  --spacing-s: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
-  --spacing-m: clamp(1.125rem, 1.0598rem + 0.3261vw, 1.3125rem); /* 18px - 21px */
-  --spacing-l: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
-  --spacing-xl: clamp(2.25rem, 2.1196rem + 0.6522vw, 2.625rem); /* 36px - 42px */
-  --spacing-2xl: clamp(3rem, 2.8261rem + 0.8696vw, 3.5rem); /* 48px - 56px */
-  --spacing-3xl: clamp(4.5rem, 4.2391rem + 1.3043vw, 5.25rem); /* 72px - 84px */
+	--spacing-3xs: clamp(0.1875rem, 0.1658rem + 0.1087vw, 0.25rem); /* 3px - 4px */
+	--spacing-2xs: clamp(0.375rem, 0.3533rem + 0.1087vw, 0.4375rem); /* 6px - 7px */
+	--spacing-xs: clamp(0.5625rem, 0.519rem + 0.2174vw, 0.6875rem); /* 9px - 11px */
+	--spacing-s: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
+	--spacing-m: clamp(1.125rem, 1.0598rem + 0.3261vw, 1.3125rem); /* 18px - 21px */
+	--spacing-l: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
+	--spacing-xl: clamp(2.25rem, 2.1196rem + 0.6522vw, 2.625rem); /* 36px - 42px */
+	--spacing-2xl: clamp(3rem, 2.8261rem + 0.8696vw, 3.5rem); /* 48px - 56px */
+	--spacing-3xl: clamp(4.5rem, 4.2391rem + 1.3043vw, 5.25rem); /* 72px - 84px */
 
-  /*
+	/*
 	 * Responsive Typography Scale
 	 * 
 	 * Font sizes that scale fluidly with viewport size
 	 * Creates a consistent typographic hierarchy across all devices
 	 * Follows a modular scale for harmonious size relationships
 	 */
-  --text-body-small: clamp(0.625rem, 0.5989rem + 0.1304vw, 0.7rem); /* 10px - 11.2px */
-  --text-body: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
-  --text-headline-5: clamp(0.9rem, 0.8326rem + 0.337vw, 1.0938rem); /* 14.4px - 17.5px */
-  --text-headline-4: clamp(1.08rem, 0.9801rem + 0.4995vw, 1.3672rem); /* 17.28px - 21.88px */
-  --text-headline-3: clamp(1.296rem, 1.1524rem + 0.7182vw, 1.709rem); /* 20.74px - 27.34px */
-  --text-headline-2: clamp(1.5552rem, 1.3531rem + 1.0105vw, 2.1362rem); /* 24.88px - 34.18px */
-  --text-headline-1: clamp(1.8662rem, 1.5866rem + 1.3983vw, 2.6703rem); /* 29.86px - 42.73px */
+	--text-body-small: clamp(0.625rem, 0.5989rem + 0.1304vw, 0.7rem); /* 10px - 11.2px */
+	--text-body: clamp(0.75rem, 0.7065rem + 0.2174vw, 0.875rem); /* 12px - 14px */
+	--text-headline-5: clamp(0.9rem, 0.8326rem + 0.337vw, 1.0938rem); /* 14.4px - 17.5px */
+	--text-headline-4: clamp(1.08rem, 0.9801rem + 0.4995vw, 1.3672rem); /* 17.28px - 21.88px */
+	--text-headline-3: clamp(1.296rem, 1.1524rem + 0.7182vw, 1.709rem); /* 20.74px - 27.34px */
+	--text-headline-2: clamp(1.5552rem, 1.3531rem + 1.0105vw, 2.1362rem); /* 24.88px - 34.18px */
+	--text-headline-1: clamp(1.8662rem, 1.5866rem + 1.3983vw, 2.6703rem); /* 29.86px - 42.73px */
 
-  /*
+	/*
 	 * Responsive Line Heights
 	 * 
 	 * Line heights that scale proportionally with font sizes
 	 * Ensures optimal readability across all viewport sizes
 	 * Generally follows 1.5x font size for body text, tighter for headlines
 	 */
-  --text-body-small--line-height: clamp(
-    0.9375rem,
-    0.8984rem + 0.1957vw,
-    1.05rem
-  ); /* 15px - 16.8px */
-  --text-body--line-height: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
-  --text-headline-5--line-height: clamp(
-    1.08rem,
-    0.9991rem + 0.4043vw,
-    1.3125rem
-  ); /* 17.28px - 21px */
-  --text-headline-4--line-height: clamp(
-    1.29625rem,
-    1.1762rem + 0.6vw,
-    1.64125rem
-  ); /* 20.74px - 26.26px */
-  --text-headline-3--line-height: clamp(
-    1.555625rem,
-    1.3835rem + 0.8609vw,
-    2.050625rem
-  ); /* 24.89px - 32.81px */
-  --text-headline-2--line-height: clamp(
-    1.86625rem,
-    1.6236rem + 1.213vw,
-    2.56375rem
-  ); /* 29.86px - 41.02px */
-  --text-headline-1--line-height: clamp(
-    2.239375rem,
-    1.9039rem + 1.6772vw,
-    3.20375rem
-  ); /* 35.83px - 51.26px */
+	--text-body-small--line-height: clamp(
+		0.9375rem,
+		0.8984rem +
+		0.1957vw,
+		1.05rem
+	); /* 15px - 16.8px */
+	--text-body--line-height: clamp(1.5rem, 1.413rem + 0.4348vw, 1.75rem); /* 24px - 28px */
+	--text-headline-5--line-height: clamp(
+		1.08rem,
+		0.9991rem +
+		0.4043vw,
+		1.3125rem
+	); /* 17.28px - 21px */
+	--text-headline-4--line-height: clamp(
+		1.29625rem,
+		1.1762rem +
+		0.6vw,
+		1.64125rem
+	); /* 20.74px - 26.26px */
+	--text-headline-3--line-height: clamp(
+		1.555625rem,
+		1.3835rem +
+		0.8609vw,
+		2.050625rem
+	); /* 24.89px - 32.81px */
+	--text-headline-2--line-height: clamp(
+		1.86625rem,
+		1.6236rem +
+		1.213vw,
+		2.56375rem
+	); /* 29.86px - 41.02px */
+	--text-headline-1--line-height: clamp(
+		2.239375rem,
+		1.9039rem +
+		1.6772vw,
+		3.20375rem
+	); /* 35.83px - 51.26px */
 
-  /*
+	/*
  * Animation Easing Functions
  * 
  * Custom cubic-bezier curves for smooth, natural animations
@@ -192,27 +200,27 @@
  * Example: transition-all duration-300 ease-[--ease-out-quart]
  */
 
-  /* Ease In - Slow start, fast finish */
-  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53); /* Gentle acceleration */
-  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19); /* Medium acceleration */
-  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22); /* Strong acceleration */
-  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06); /* Very strong acceleration */
-  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035); /* Exponential acceleration */
-  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335); /* Circular acceleration */
+	/* Ease In - Slow start, fast finish */
+	--ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53); /* Gentle acceleration */
+	--ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19); /* Medium acceleration */
+	--ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22); /* Strong acceleration */
+	--ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06); /* Very strong acceleration */
+	--ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035); /* Exponential acceleration */
+	--ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335); /* Circular acceleration */
 
-  /* Ease Out - Fast start, slow finish */
-  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Gentle deceleration */
-  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1); /* Medium deceleration */
-  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1); /* Strong deceleration (popular) */
-  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1); /* Very strong deceleration */
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); /* Exponential deceleration */
-  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1); /* Circular deceleration */
+	/* Ease Out - Fast start, slow finish */
+	--ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Gentle deceleration */
+	--ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1); /* Medium deceleration */
+	--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1); /* Strong deceleration (popular) */
+	--ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1); /* Very strong deceleration */
+	--ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); /* Exponential deceleration */
+	--ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1); /* Circular deceleration */
 
-  /* Ease In Out - Slow start and finish, fast middle */
-  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* Gentle S-curve */
-  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1); /* Medium S-curve */
-  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1); /* Strong S-curve */
-  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1); /* Very strong S-curve */
-  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1); /* Exponential S-curve */
-  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86); /* Circular S-curve */
+	/* Ease In Out - Slow start and finish, fast middle */
+	--ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* Gentle S-curve */
+	--ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1); /* Medium S-curve */
+	--ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1); /* Strong S-curve */
+	--ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1); /* Very strong S-curve */
+	--ease-in-out-expo: cubic-bezier(1, 0, 0, 1); /* Exponential S-curve */
+	--ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86); /* Circular S-curve */
 }
