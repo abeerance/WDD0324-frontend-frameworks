@@ -23,6 +23,8 @@ export const authConfig: NextAuthConfig = {
         // the authorize function is the function which will be called from the signIn() functionality of auth.js
         const validatedFields = loginSchema.safeParse(credentials); // we connect the validatedFields with our login Zod schema
 
+        console.log("validatedFields", validatedFields);
+
         if (!validatedFields.success) {
           return null; // if there is an error, we return null, which equals to no session
         }
@@ -53,7 +55,7 @@ export const authConfig: NextAuthConfig = {
             email: data.user.email,
             bio: data.user.bio,
             userRole: data.user.userRole,
-            accessToken: data.user.accessToken,
+            accessToken: data.token,
           }; // here we return the user object, which we will need in the JWT callback function
         } catch (error) {
           console.error("Login error: ", error);
