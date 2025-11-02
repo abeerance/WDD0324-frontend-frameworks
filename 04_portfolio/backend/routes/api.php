@@ -2,7 +2,7 @@
 
 use App\Controllers\NotesController;
 use App\Controllers\AuthController;
-use App\Controllers\CommentsController;
+use App\Controllers\ProjectsController;
 use App\Controllers\TagsController;
 use App\Controllers\UploadsController;
 use App\Controllers\UserController;
@@ -14,6 +14,7 @@ Route::get('/user', [UserController::class, 'show']);
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/notes', [NotesController::class, 'index']);
+Route::get('/projects', [ProjectsController::class, 'index']);
 Route::get('/tags', [TagsController::class, 'index']);
 Route::get('/uploads', [UploadsController::class, 'index']);
 
@@ -32,8 +33,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Note routes
     Route::post('/notes', [NotesController::class, 'create']);
-    Route::patch('/notes/{id}', [NotesController::class, 'update']);
-    Route::delete('/notes/{id}', [NotesController::class, 'destroy']);
+    Route::patch('/note/{id}', [NotesController::class, 'update']);
+    Route::delete('/note/{id}', [NotesController::class, 'destroy']);
+
+    // Note routes
+    Route::post('/projects', [ProjectsController::class, 'create']);
+    Route::patch('/project/{id}', [ProjectsController::class, 'update']);
+    Route::delete('/project/{id}', [ProjectsController::class, 'destroy']);
 
     // Tag routes
     Route::put('/notes/{id}/tags', [TagsController::class, 'assign']); // Assign tags to a note

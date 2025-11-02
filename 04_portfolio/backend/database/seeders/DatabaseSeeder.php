@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Note;
+use App\Models\Project;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -62,11 +63,85 @@ class DatabaseSeeder extends Seeder
             Image::create(['name' => 'Design System', 'url' => 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&h=600&fit=crop', 'user_id' => 1]),
             Image::create(['name' => 'Mobile App', 'url' => 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop', 'user_id' => 1]),
             Image::create(['name' => 'Creative Process', 'url' => 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=600&fit=crop', 'user_id' => 1]),
-
-            // Content images for embedding
             Image::create(['name' => 'Code Detail', 'url' => 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop', 'user_id' => 1]),
             Image::create(['name' => 'Wireframe Sketch', 'url' => 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=600&fit=crop', 'user_id' => 1]),
+            Image::create(['name' => 'Architecture', 'url' => 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=600&fit=crop', 'user_id' => 1]),
+            Image::create(['name' => 'Collaboration', 'url' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop', 'user_id' => 1]),
         ];
+
+        // Portfolio projects
+        ////////////////////////////////////////////////////////////////////////////
+        $projectsData = [
+            [
+                'title' => 'E-Commerce Platform Redesign',
+                'lead' => 'Complete overhaul of checkout flow resulting in 40% conversion increase.',
+                'date' => '2025-03-01',
+                'main_visual_index' => 0,
+                'content_image_ids' => [5, 6]
+            ],
+            [
+                'title' => 'Real-Time Analytics Dashboard',
+                'lead' => 'Built with React, WebSockets, and D3.js for live data visualization.',
+                'date' => '2025-02-15',
+                'main_visual_index' => 1,
+                'content_image_ids' => [5]
+            ],
+            [
+                'title' => 'Design System for SaaS Product',
+                'lead' => 'Comprehensive component library with Storybook documentation.',
+                'date' => '2025-01-20',
+                'main_visual_index' => 2,
+                'content_image_ids' => [7, 8]
+            ],
+        ];
+
+        foreach ($projectsData as $projectData) {
+            $date = $projectData['date'];
+            $title = $projectData['title'];
+            $slug = $date . '-' . Str::slug($title);
+
+            // Build content with embedded images
+            $contentNodes = [
+                [
+                    'type' => 'heading',
+                    'attrs' => ['level' => 2],
+                    'content' => [['type' => 'text', 'text' => 'Project Overview']]
+                ],
+                [
+                    'type' => 'paragraph',
+                    'content' => [['type' => 'text', 'text' => $projectData['lead'] . ' This project showcases modern development practices and user-centered design.']]
+                ]
+            ];
+
+            // Add content images
+            foreach ($projectData['content_image_ids'] as $imageId) {
+                $contentNodes[] = [
+                    'type' => 'image',
+                    'attrs' => [
+                        'src' => $images[$imageId]->url,
+                        'image_id' => $images[$imageId]->id,
+                        'alt' => $images[$imageId]->name
+                    ]
+                ];
+
+                $contentNodes[] = [
+                    'type' => 'paragraph',
+                    'content' => [['type' => 'text', 'text' => 'Technical implementation details and design decisions explained in depth.']]
+                ];
+            }
+
+            Project::create([
+                'title' => $title,
+                'lead' => $projectData['lead'],
+                'slug' => $slug,
+                'content' => json_encode([
+                    'type' => 'doc',
+                    'content' => $contentNodes
+                ]),
+                'user_id' => 1,
+                'main_visual_id' => $images[$projectData['main_visual_index']]->id,
+            ]);
+        }
 
         // Portfolio notes
         ////////////////////////////////////////////////////////////////////////////
@@ -77,7 +152,7 @@ class DatabaseSeeder extends Seeder
                 'date' => '2025-03-15',
                 'tags' => ['project'],
                 'main_visual_index' => 0,
-                'content_image_ids' => [5] // Code detail image in content
+                'content_image_ids' => [5]
             ],
             [
                 'title' => 'Thoughts on Design Systems',
@@ -101,7 +176,7 @@ class DatabaseSeeder extends Seeder
                 'date' => '2025-02-10',
                 'tags' => ['project'],
                 'main_visual_index' => 3,
-                'content_image_ids' => [6] // Wireframe sketch in content
+                'content_image_ids' => [6]
             ],
             [
                 'title' => 'The Psychology of User Interface Design',

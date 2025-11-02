@@ -41,6 +41,12 @@ class User extends Authenticatable
         return $this->hasMany(Note::class);
     }
 
+    // Define the one-to-many relationship with projects
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
+
 
     // Define the one-to-many relationship with images
     public function images(): HasMany
