@@ -1,6 +1,10 @@
 import { cn } from "@/lib/utils";
 import * as FormPrimitive from "@radix-ui/react-form";
-import { ComponentPropsWithoutRef, ComponentRef, forwardRef } from "react";
+import {
+	type ComponentPropsWithoutRef,
+	type ComponentRef,
+	forwardRef,
+} from "react";
 
 /**
  * Form Label component
@@ -50,31 +54,31 @@ import { ComponentPropsWithoutRef, ComponentRef, forwardRef } from "react";
  */
 
 export const FormLabel = forwardRef<
-  ComponentRef<typeof FormPrimitive.Label>,
-  ComponentPropsWithoutRef<typeof FormPrimitive.Label>
+	ComponentRef<typeof FormPrimitive.Label>,
+	ComponentPropsWithoutRef<typeof FormPrimitive.Label>
 >(({ className, ...props }, ref) => {
-  return (
-    <FormPrimitive.Label
-      ref={ref}
-      className={cn(
-        // Base styles
-        "text-body font-semibold font-general-sans",
+	return (
+		<FormPrimitive.Label
+			ref={ref}
+			className={cn(
+				// Base styles
+				"text-body font-semibold font-general-sans",
 
-        // Default color
-        "text-foreground-900",
+				// Default color
+				"text-foreground-900",
 
-        // Invalid state - changes to secondary (dusty rose)
-        "data-[invalid]:text-secondary-600",
+				// Invalid state - changes to secondary (dusty rose)
+				"data-[invalid]:text-secondary-600",
 
-        // Valid state - changes to primary (sage green)
-        "data-[valid]:text-primary-600",
+				// Valid state - changes to primary (sage green)
+				"data-[valid]:text-primary-600",
 
-        // Custom classes
-        className
-      )}
-      {...props}
-    />
-  );
+				// Custom classes
+				className,
+			)}
+			{...props}
+		/>
+	);
 });
 
 FormLabel.displayName = "FormLabel";
