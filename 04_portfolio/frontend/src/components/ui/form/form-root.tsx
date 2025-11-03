@@ -73,7 +73,7 @@ export const FormRoot = ({
   ...props
 }: ComponentPropsWithoutRef<typeof FormPrimitive.Root>) => {
   return (
-    <FormPrimitive.Root className={cn("space-y-l", className)} {...props}>
+    <FormPrimitive.Root className={cn("space-y-m", className)} {...props}>
       {children}
     </FormPrimitive.Root>
   );
