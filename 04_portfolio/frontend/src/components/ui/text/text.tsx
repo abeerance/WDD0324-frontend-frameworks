@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "react";
 
 // Define union type for all HTML elements this component can render as
 // Restricts to semantic text elements to maintain component purpose
-type TextElement = "h1" | "h2" | "h3" | "h4" | "h5" | "p" | "span";
+export type TextElement = "h1" | "h2" | "h3" | "h4" | "h5" | "p" | "span";
 
 // Define available text style variants that map to CSS classes
 // Each variant represents a different typography scale/purpose
