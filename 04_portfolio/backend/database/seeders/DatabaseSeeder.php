@@ -660,50 +660,434 @@ impl DeviceManager {
                 'main_visual_id' => $images[$projectData['main_visual_index']]->id,
             ]);
         }
-
         // Portfolio notes 
-        ////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
         $notesData = [
             [
-                'title' => 'Building a Modern React Dashboard',
-                'lead' => 'Exploring component architecture and state management patterns in a complex data visualization project.',
+                'title' => 'Debugging React Performance: A Deep Dive',
+                'lead' => 'How I identified and fixed a memory leak that was crashing our dashboard after 30 minutes of use.',
                 'date' => '2025-03-15',
-                'tags' => ['project'],
-                'main_visual_index' => 0,
-                'content_image_ids' => [5]
-            ],
-            [
-                'title' => 'Thoughts on Design Systems',
-                'lead' => 'Why consistency matters more than creativity in large-scale applications.',
-                'date' => '2025-04-22',
                 'tags' => ['thoughts'],
-                'main_visual_index' => 2,
-                'content_image_ids' => []
+                'main_visual_index' => 0,
+                'intro' => 'Our analytics dashboard worked perfectly in development but crashed browsers in production. Users complained about tabs freezing, RAM usage spiraling out of control, and eventually the dreaded "Aw, Snap!" error. This is the story of how I tracked down the culprit.',
+                'sections' => [
+                    [
+                        'heading' => 'The Symptoms',
+                        'content' => 'Memory usage started at 150MB and grew by 2MB every minute. After 30 minutes, Chrome tabs would freeze. Firefox performed slightly better but still crashed eventually. The pattern was consistent: the longer the dashboard stayed open, the worse it got. Users who left it open overnight returned to completely unresponsive browsers.'
+                    ],
+                    [
+                        'heading' => 'Detective Work',
+                        'content' => 'I opened Chrome DevTools Memory Profiler and took heap snapshots every 5 minutes. The detached DOM nodes count was climbing exponentially. Something was preventing React from cleaning up old components. I suspected WebSocket listeners, but those were properly cleaned up in useEffect return statements.',
+                        'image_id' => 5,
+                        'image_description' => 'The real breakthrough came when I noticed our chart library was holding references to old data arrays. Each re-render created new arrays but never released the old ones. The chart component was re-rendering on every WebSocket message - 60 times per second during peak traffic. That meant creating 3,600 new arrays per minute, all staying in memory forever.'
+                    ],
+                    [
+                        'heading' => 'The Fix',
+                        'content' => 'The solution required three changes. First, I memoized the chart data using useMemo with proper dependencies. Second, I implemented data pagination - only keeping the last 1000 points in memory instead of unlimited history. Third, I added a cleanup function that explicitly nulled out references when components unmounted. Memory usage stabilized at 180MB regardless of how long the dashboard stayed open.'
+                    ],
+                    [
+                        'heading' => 'Lessons Learned',
+                        'content' => 'Performance monitoring should start in development, not after users complain. Profiling tools are your best friend - guessing wastes time. Third-party libraries can leak memory if you do not manage their lifecycle. Always test with production data volumes, not just sample datasets. Memory leaks are silent killers that compound over time.'
+                    ]
+                ],
+                'code_example' => [
+                    'heading' => 'The Memory-Safe Chart Component',
+                    'language' => 'typescript',
+                    'code' => 'const ChartComponent = ({ dataStream }: Props) => {
+  const [chartData, setChartData] = useState<DataPoint[]>([]);
+  const chartRef = useRef<Chart | null>(null);
+  
+  const processedData = useMemo(() => {
+    // Keep only last 1000 points
+    const trimmed = chartData.slice(-1000);
+    
+    return {
+      labels: trimmed.map(d => d.timestamp),
+      datasets: [{
+        data: trimmed.map(d => d.value),
+        // Reuse the same config object
+        borderColor: "rgb(75, 192, 192)",
+      }]
+    };
+  }, [chartData]);
+  
+  useEffect(() => {
+    const handleData = (newPoint: DataPoint) => {
+      setChartData(prev => [...prev, newPoint].slice(-1000));
+    };
+    
+    dataStream.on("data", handleData);
+    
+    return () => {
+      dataStream.off("data", handleData);
+      // Explicitly destroy chart instance
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
+  }, [dataStream]);
+  
+  return <Line ref={chartRef} data={processedData} />;
+};'
+                ],
+                'quote' => 'Memory leaks do not crash your app immediately. They wait patiently, accumulating technical debt until the inevitable collapse. Fix them early or pay compound interest later.',
+                'takeaways' => [
+                    'Always profile memory usage with production-like data volumes',
+                    'Third-party libraries are not automatically memory-safe - you must manage their lifecycle',
+                    'useMemo and useCallback are not just optimizations - they prevent memory leaks',
+                    'Implement data pagination for infinite streams - unlimited history breaks browsers',
+                    'Clean up ALL subscriptions, listeners, and references in useEffect cleanup functions'
+                ]
             ],
             [
-                'title' => 'Weekend Game: CSS Art Challenge',
-                'lead' => 'Creating pixel art using only CSS properties - no images allowed.',
-                'date' => '2025-03-20',
-                'tags' => ['play'],
-                'main_visual_index' => 4,
-                'content_image_ids' => []
-            ],
-            [
-                'title' => 'Mobile-First E-commerce App',
-                'lead' => 'From wireframes to production: building a React Native shopping experience.',
-                'date' => '2025-02-10',
-                'tags' => ['project'],
-                'main_visual_index' => 3,
-                'content_image_ids' => [6]
-            ],
-            [
-                'title' => 'The Psychology of User Interface Design',
-                'lead' => 'How cognitive biases influence the way we interact with digital products.',
-                'date' => '2025-01-18',
+                'title' => 'Why I Stopped Using Redux',
+                'lead' => 'After 3 years of Redux in production, I migrated our entire state management to Zustand. Here is why.',
+                'date' => '2025-02-28',
                 'tags' => ['thoughts'],
                 'main_visual_index' => 1,
-                'content_image_ids' => []
+                'intro' => 'Redux was the industry standard when I started. Everyone used it. Every tutorial taught it. Every job posting required it. But after maintaining a large Redux codebase for three years, I realized we were solving the wrong problems. The boilerplate was not making us safer - it was slowing us down.',
+                'sections' => [
+                    [
+                        'heading' => 'The Breaking Point',
+                        'content' => 'Adding a simple loading state required touching 5 files: action types, action creators, reducer, selector, and the component. A feature that should take 2 minutes took 20. Code reviews became debates about action naming conventions instead of business logic. Junior developers spent weeks learning Redux before they could contribute anything meaningful.'
+                    ],
+                    [
+                        'heading' => 'What Zustand Changed',
+                        'content' => 'The same loading state in Zustand is one line in the store definition. No actions, no reducers, no dispatch, no connect. Just state and functions to modify it. TypeScript inference works perfectly without manual typing. DevTools integration is automatic. Middleware is optional, not mandatory. The entire mental model fits in 5 minutes of reading docs.'
+                    ],
+                    [
+                        'heading' => 'The Migration Process',
+                        'content' => 'I started with the least critical feature - user preferences. Converted one Redux slice to a Zustand store in 30 minutes. Tests passed immediately. No bugs. I migrated one feature per week over 3 months. Redux and Zustand coexisted peacefully during the transition. The codebase shrunk by 2,847 lines when the migration completed.'
+                    ],
+                    [
+                        'heading' => 'When Redux Still Makes Sense',
+                        'content' => 'Redux shines in specific scenarios: large teams needing strict conventions, complex state with intricate interdependencies, applications requiring time-travel debugging, or environments where middleware ecosystems matter. But for most applications, these requirements are theoretical, not practical. Simplicity beats theoretical perfection.'
+                    ]
+                ],
+                'code_example' => [
+                    'heading' => 'Redux vs Zustand: Side by Side',
+                    'language' => 'typescript',
+                    'code' => '// Redux: 5 files, 60+ lines
+// actions/user.ts
+export const UPDATE_USER = "UPDATE_USER";
+export const updateUser = (user: User) => ({
+  type: UPDATE_USER,
+  payload: user
+});
+
+// reducers/user.ts  
+export const userReducer = (state = initialState, action: Action) => {
+  switch (action.type) {
+    case UPDATE_USER:
+      return { ...state, user: action.payload };
+    default:
+      return state;
+  }
+};
+
+// Component usage
+const user = useSelector((state: RootState) => state.user);
+const dispatch = useDispatch();
+dispatch(updateUser(newUser));
+
+// ------------------------------------------------
+
+// Zustand: 1 file, 15 lines
+import { create } from "zustand";
+
+interface UserStore {
+  user: User | null;
+  updateUser: (user: User) => void;
+}
+
+export const useUserStore = create<UserStore>((set) => ({
+  user: null,
+  updateUser: (user) => set({ user })
+}));
+
+// Component usage  
+const { user, updateUser } = useUserStore();
+updateUser(newUser);'
+                ],
+                'quote' => 'The best architecture is the one you can delete and rewrite in a weekend. Redux was elegant in theory but oppressive in practice. Zustand is boring, simple, and exactly what most applications actually need.',
+                'takeaways' => [
+                    'Boilerplate does not equal safety - it often just slows development',
+                    'Choose tools based on actual requirements, not industry trends',
+                    'Migration can happen gradually - coexistence is possible',
+                    'Developer experience matters - happy developers write better code',
+                    'Simple solutions are easier to maintain, debug, and explain to new team members'
+                ]
             ],
+            [
+                'title' => 'Building a WebRTC Video Chat from Scratch',
+                'lead' => 'No libraries, no frameworks - just the WebRTC API and 400 lines of TypeScript.',
+                'date' => '2025-04-10',
+                'tags' => ['project'],
+                'main_visual_index' => 3,
+                'intro' => 'I wanted to understand how video chat actually works under the hood. Every tutorial pointed to libraries like SimpleWebRTC or Daily.co. But I learn best by building, not by configuring. So I spent two weeks implementing peer-to-peer video chat using only the native WebRTC APIs. This is what I learned.',
+                'sections' => [
+                    [
+                        'heading' => 'The WebRTC Handshake Dance',
+                        'content' => 'WebRTC requires a complex negotiation before peers can connect. First, each peer creates an RTCPeerConnection. Then they generate "offers" and "answers" containing connection details. These Session Description Protocol (SDP) messages must be exchanged through a signaling server. Only after both peers have each other is SDP can they start discovering connection paths through ICE candidates.',
+                        'image_id' => 6,
+                        'image_description' => 'The signaling server handles the initial handshake but never touches media streams. I used WebSockets for real-time signaling. Each peer sends their offer/answer and ICE candidates to the server, which forwards them to the other peer. Once the connection is established, media flows peer-to-peer - the server is no longer involved. This architecture scales well because the server only handles lightweight JSON messages, not bandwidth-heavy video streams.'
+                    ],
+                    [
+                        'heading' => 'NAT Traversal: The Hidden Complexity',
+                        'content' => 'Most computers sit behind NAT routers with private IP addresses. Direct peer-to-peer connections are impossible without help. STUN servers help peers discover their public IP addresses. When direct connection fails, TURN servers relay traffic between peers. I had to configure both STUN and TURN servers. Google provides free STUN servers, but TURN requires your own infrastructure. Without proper TURN fallback, about 10% of connections failed completely.'
+                    ],
+                    [
+                        'heading' => 'Handling Connection Failures',
+                        'content' => 'WebRTC connections fail constantly - network changes, firewall blocks, packet loss. I implemented automatic reconnection with exponential backoff. When a connection drops, the app tries to renegotiate. If renegotiation fails 3 times, it falls back to TURN relay. The user sees a "reconnecting" indicator but stays in the call. Graceful degradation matters more than perfect connections - users forgive temporary glitches but not total failures.'
+                    ]
+                ],
+                'code_example' => [
+                    'heading' => 'Establishing the Peer Connection',
+                    'language' => 'typescript',
+                    'code' => 'class VideoChatPeer {
+  private pc: RTCPeerConnection;
+  private signaling: SignalingSocket;
+  
+  constructor(private remoteId: string) {
+    this.pc = new RTCPeerConnection({
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { 
+          urls: "turn:turn.example.com:3478",
+          username: "user",
+          credential: "pass"
+        }
+      ]
+    });
+    
+    this.pc.onicecandidate = (e) => {
+      if (e.candidate) {
+        this.signaling.send({
+          type: "ice-candidate",
+          candidate: e.candidate,
+          to: this.remoteId
+        });
+      }
+    };
+    
+    this.pc.ontrack = (e) => {
+      const videoElement = document.getElementById("remote-video") as HTMLVideoElement;
+      videoElement.srcObject = e.streams[0];
+    };
+  }
+  
+  async createOffer() {
+    const offer = await this.pc.createOffer();
+    await this.pc.setLocalDescription(offer);
+    
+    this.signaling.send({
+      type: "offer",
+      sdp: offer,
+      to: this.remoteId
+    });
+  }
+  
+  async handleAnswer(answer: RTCSessionDescriptionInit) {
+    await this.pc.setRemoteDescription(answer);
+  }
+  
+  async addIceCandidate(candidate: RTCIceCandidateInit) {
+    await this.pc.addIceCandidate(candidate);
+  }
+}'
+                ],
+                'quote' => 'WebRTC is beautiful and terrifying in equal measure. The API gives you incredible power but expects you to handle network failures, NAT traversal, and codec negotiation. There is no hand-holding. You either understand the fundamentals or you fight obscure connection failures.',
+                'takeaways' => [
+                    'WebRTC requires a signaling server even though media flows peer-to-peer',
+                    'STUN servers help discover public IPs, TURN servers relay when direct connection fails',
+                    'Always implement reconnection logic - WebRTC connections are fragile',
+                    'Test on mobile networks and corporate firewalls - local testing lies',
+                    'Understanding fundamentals > memorizing library APIs'
+                ]
+            ],
+            [
+                'title' => 'CSS Grid Changed How I Think About Layouts',
+                'lead' => 'Why I deleted 500 lines of flexbox hacks and replaced them with 50 lines of Grid.',
+                'date' => '2025-01-20',
+                'tags' => ['thoughts'],
+                'main_visual_index' => 2,
+                'intro' => 'I resisted CSS Grid for years. Flexbox worked fine. I knew it well. Grid seemed like unnecessary complexity. Then I inherited a codebase with nested flexbox containers 7 levels deep. Debugging responsive layouts meant hunting through component trees. That is when I finally learned Grid properly. Now I cannot go back.',
+                'sections' => [
+                    [
+                        'heading' => 'The Flexbox Trap',
+                        'content' => 'Flexbox excels at one-dimensional layouts - rows or columns. But complex layouts require nesting multiple flex containers. Each level of nesting adds cognitive load. Responsive breakpoints multiply the complexity. You end up with media queries that swap flex-direction, adjust justify-content, and recalculate flex-basis. The layout logic is scattered across components and stylesheets.'
+                    ],
+                    [
+                        'heading' => 'Grid is Two-Dimensional Thinking',
+                        'content' => 'Grid lets you define rows and columns simultaneously. Items can span multiple cells. Gaps are built-in, no more margin hacks. Alignment works in both dimensions at once. The entire layout structure lives in one place - the container. Child elements just declare which cells they occupy. Responsive layouts change grid-template-columns, not the entire component structure.'
+                    ],
+                    [
+                        'heading' => 'When to Use Each',
+                        'content' => 'Flexbox remains perfect for navigation bars, button groups, and anything truly one-dimensional. Grid shines for page layouts, card grids, and complex component arrangements. I now start with Grid for layout structure, then use Flexbox inside individual components for alignment. They complement each other - you do not have to choose one exclusively.'
+                    ]
+                ],
+                'code_example' => [
+                    'heading' => 'Dashboard Layout: Before and After',
+                    'language' => 'css',
+                    'code' => '/* Before: Nested Flexbox Hell */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 250px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex: 0 0 60px;
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+}
+
+.widgets {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* After: Single Grid Definition */
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 60px 1fr;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar content";
+  height: 100vh;
+  gap: 20px;
+}
+
+.sidebar { grid-area: sidebar; }
+.header { grid-area: header; }
+.content { 
+  grid-area: content;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}'
+                ],
+                'quote' => 'Flexbox is a hammer. Grid is a full toolbox. I spent years hitting every layout problem with a hammer because it was the only tool I knew well. Learning Grid felt like discovering screwdrivers, wrenches, and saws all existed.',
+                'takeaways' => [
+                    'Grid and Flexbox solve different problems - use both',
+                    'Named grid areas make layouts self-documenting',
+                    'auto-fit and minmax eliminate most media query complexity',
+                    'Grid reduces nesting depth significantly',
+                    'Learn tools deeply before dismissing them as unnecessary complexity'
+                ]
+            ],
+            [
+                'title' => 'My First Rust Project: A CLI File Organizer',
+                'lead' => 'Coming from TypeScript, Rust felt like programming with a strict parent watching over my shoulder.',
+                'date' => '2025-03-05',
+                'tags' => ['project'],
+                'main_visual_index' => 5,
+                'intro' => 'I decided to learn Rust by building something practical - a CLI tool that organizes messy download folders by file type. The project seemed simple: read files, check extensions, move them to categorized folders. In Node.js, I would have finished it in an afternoon. In Rust, it took me a week. But the result was worth every compiler error.',
+                'sections' => [
+                    [
+                        'heading' => 'Fighting the Borrow Checker',
+                        'content' => 'My first attempt did not compile. The borrow checker rejected everything. I tried to read a file path while simultaneously moving it. I borrowed mutable references multiple times. I forgot to handle error cases. Every mistake produced detailed compiler errors explaining exactly what I did wrong. After three days, I stopped fighting the compiler and started listening to it.',
+                        'image_id' => 5,
+                        'image_description' => 'The breakthrough came when I understood ownership is not punishment - it is prevention. The compiler catches bugs I would only discover in production with Node.js. Null pointer errors? Impossible. Data races? Compiler prevents them. Memory leaks? Freed automatically when variables go out of scope. The strictness I cursed during development became a safety net I deeply appreciated.'
+                    ],
+                    [
+                        'heading' => 'Performance That Actually Matters',
+                        'content' => 'The finished CLI processes 10,000 files in 0.8 seconds. The equivalent Node.js version took 4.2 seconds. Rust uses 12MB of RAM. Node.js used 85MB. The binary is 2.3MB - no runtime required. I can distribute a single executable that works anywhere. For a CLI tool that users run repeatedly, these differences compound into noticeably better user experience.'
+                    ],
+                    [
+                        'heading' => 'Error Handling That Forces Good Habits',
+                        'content' => 'Rust has no exceptions. Functions return Result<T, E> types. You must explicitly handle every error or propagate it with ?. This felt tedious at first. Then I realized it made my code self-documenting. Every function signature shows what can fail and why. No hidden exceptions. No try-catch blocks scattered randomly. Error handling is part of the type system, not an afterthought.'
+                    ]
+                ],
+                'code_example' => [
+                    'heading' => 'The Core File Organization Logic',
+                    'language' => 'rust',
+                    'code' => 'use std::fs;
+use std::path::{Path, PathBuf};
+use anyhow::{Context, Result};
+
+pub struct FileOrganizer {
+    source_dir: PathBuf,
+    target_dir: PathBuf,
+}
+
+impl FileOrganizer {
+    pub fn new(source: &str, target: &str) -> Self {
+        Self {
+            source_dir: PathBuf::from(source),
+            target_dir: PathBuf::from(target),
+        }
+    }
+    
+    pub fn organize(&self) -> Result<usize> {
+        let mut moved_count = 0;
+        
+        for entry in fs::read_dir(&self.source_dir)
+            .context("Failed to read source directory")? 
+        {
+            let entry = entry?;
+            let path = entry.path();
+            
+            if path.is_file() {
+                self.move_file(&path)?;
+                moved_count += 1;
+            }
+        }
+        
+        Ok(moved_count)
+    }
+    
+    fn move_file(&self, file: &Path) -> Result<()> {
+        let category = self.determine_category(file);
+        let target_folder = self.target_dir.join(category);
+        
+        fs::create_dir_all(&target_folder)?;
+        
+        let file_name = file.file_name()
+            .context("Invalid filename")?;
+        let target_path = target_folder.join(file_name);
+        
+        fs::rename(file, target_path)?;
+        Ok(())
+    }
+    
+    fn determine_category(&self, file: &Path) -> &str {
+        match file.extension().and_then(|e| e.to_str()) {
+            Some("jpg" | "png" | "gif") => "images",
+            Some("pdf" | "doc" | "docx") => "documents",
+            Some("mp4" | "mov" | "avi") => "videos",
+            Some("mp3" | "wav" | "flac") => "audio",
+            _ => "other"
+        }
+    }
+}'
+                ],
+                'quote' => 'Rust makes simple things hard and complex things possible. The learning curve is steep, but once you summit it, you wonder how you ever built reliable software without the compiler is help.',
+                'takeaways' => [
+                    'The borrow checker prevents entire classes of bugs at compile time',
+                    'Result types force explicit error handling - no hidden failures',
+                    'Performance matters for CLI tools users run repeatedly',
+                    'Zero-cost abstractions means safety without runtime overhead',
+                    'Rust is worth learning even if you do not use it daily - it changes how you think about memory and errors'
+                ]
+            ]
         ];
 
         foreach ($notesData as $noteData) {
@@ -711,30 +1095,102 @@ impl DeviceManager {
             $title = $noteData['title'];
             $slug = $date . '-' . Str::slug($title);
 
-            // Build content with embedded images
             $contentNodes = [
                 [
+                    'type' => 'heading',
+                    'attrs' => ['level' => 1],
+                    'content' => [['type' => 'text', 'text' => $title]]
+                ],
+                [
                     'type' => 'paragraph',
-                    'content' => [['type' => 'text', 'text' => $noteData['lead'] . ' This is sample content for the portfolio.']]
+                    'content' => [
+                        [
+                            'type' => 'text',
+                            'marks' => [['type' => 'bold']],
+                            'text' => 'TL;DR: '
+                        ],
+                        ['type' => 'text', 'text' => $noteData['lead']]
+                    ]
+                ],
+                [
+                    'type' => 'paragraph',
+                    'content' => [['type' => 'text', 'text' => $noteData['intro']]]
                 ]
             ];
 
-            // Add content images to the note content
-            foreach ($noteData['content_image_ids'] as $imageId) {
+            foreach ($noteData['sections'] as $section) {
                 $contentNodes[] = [
-                    'type' => 'image',
-                    'attrs' => [
-                        'src' => $images[$imageId]->url,
-                        'image_id' => $images[$imageId]->id,
-                        'alt' => $images[$imageId]->name
-                    ]
+                    'type' => 'heading',
+                    'attrs' => ['level' => 2],
+                    'content' => [['type' => 'text', 'text' => $section['heading']]]
                 ];
 
                 $contentNodes[] = [
                     'type' => 'paragraph',
-                    'content' => [['type' => 'text', 'text' => 'Detailed explanation and technical insights continue here...']]
+                    'content' => [['type' => 'text', 'text' => $section['content']]]
+                ];
+
+                if (isset($section['image_id'])) {
+                    $contentNodes[] = [
+                        'type' => 'image',
+                        'attrs' => [
+                            'src' => $images[$section['image_id']]->url,
+                            'image_id' => $images[$section['image_id']]->id,
+                            'alt' => $images[$section['image_id']]->name
+                        ]
+                    ];
+
+                    $contentNodes[] = [
+                        'type' => 'paragraph',
+                        'content' => [['type' => 'text', 'text' => $section['image_description']]]
+                    ];
+                }
+            }
+
+            if (isset($noteData['code_example'])) {
+                $contentNodes[] = [
+                    'type' => 'heading',
+                    'attrs' => ['level' => 2],
+                    'content' => [['type' => 'text', 'text' => $noteData['code_example']['heading']]]
+                ];
+
+                $contentNodes[] = [
+                    'type' => 'codeBlock',
+                    'attrs' => ['language' => $noteData['code_example']['language']],
+                    'content' => [
+                        ['type' => 'text', 'text' => $noteData['code_example']['code']]
+                    ]
                 ];
             }
+
+            $contentNodes[] = [
+                'type' => 'blockquote',
+                'content' => [
+                    [
+                        'type' => 'paragraph',
+                        'content' => [['type' => 'text', 'text' => $noteData['quote']]]
+                    ]
+                ]
+            ];
+
+            $contentNodes[] = [
+                'type' => 'heading',
+                'attrs' => ['level' => 2],
+                'content' => [['type' => 'text', 'text' => 'Key Takeaways']]
+            ];
+
+            $contentNodes[] = [
+                'type' => 'bulletList',
+                'content' => array_map(fn($takeaway) => [
+                    'type' => 'listItem',
+                    'content' => [
+                        [
+                            'type' => 'paragraph',
+                            'content' => [['type' => 'text', 'text' => $takeaway]]
+                        ]
+                    ]
+                ], $noteData['takeaways'])
+            ];
 
             $note = Note::create([
                 'title' => $title,
@@ -745,56 +1201,6 @@ impl DeviceManager {
                     'content' => $contentNodes
                 ]),
                 'user_id' => 1,
-                'main_visual_id' => $images[$noteData['main_visual_index']]->id,
-            ]);
-
-            // Attach tags
-            foreach ($noteData['tags'] as $tagName) {
-                if (isset($tags[$tagName])) {
-                    $note->tags()->attach($tags[$tagName]->id);
-                }
-            }
-        }
-
-        // Notes for other users
-        $otherNotes = [
-            [
-                'title' => 'Learning TypeScript',
-                'lead' => 'My journey from JavaScript to type-safe development.',
-                'date' => '2025-01-15',
-                'tags' => ['thoughts'],
-                'user_id' => 2,
-                'main_visual_index' => 1
-            ],
-            [
-                'title' => 'Vue.js Portfolio Site',
-                'lead' => 'Building a personal website with Nuxt.js and Tailwind CSS.',
-                'date' => '2025-02-05',
-                'tags' => ['project'],
-                'user_id' => 3,
-                'main_visual_index' => 0
-            ],
-        ];
-
-        foreach ($otherNotes as $noteData) {
-            $date = $noteData['date'];
-            $title = $noteData['title'];
-            $slug = $date . '-' . Str::slug($title);
-
-            $note = Note::create([
-                'title' => $title,
-                'lead' => $noteData['lead'],
-                'slug' => $slug,
-                'content' => json_encode([
-                    'type' => 'doc',
-                    'content' => [
-                        [
-                            'type' => 'paragraph',
-                            'content' => [['type' => 'text', 'text' => $noteData['lead']]]
-                        ]
-                    ]
-                ]),
-                'user_id' => $noteData['user_id'],
                 'main_visual_id' => $images[$noteData['main_visual_index']]->id,
             ]);
 

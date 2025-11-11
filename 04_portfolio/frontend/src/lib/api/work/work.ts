@@ -21,6 +21,7 @@ export interface Project {
     url: string; // Image URL (Unsplash or uploaded)
     name: string; // Image description/alt text
   };
+  content: string;
   user_id: number; // ID of the user who created the project
 }
 

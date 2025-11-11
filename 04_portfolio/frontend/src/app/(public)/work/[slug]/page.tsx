@@ -1,6 +1,8 @@
 import { Grid, GridItem } from "@/components/layout/grid/grid";
+import { TiptapRenderer } from "@/components/tiptap/tiptap-renderer";
 import { Text } from "@/components/ui/text/text";
 import { getProjectBySlug, getUserById } from "@/lib/api/work/work";
+import type { JSONContent } from "@tiptap/react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -54,6 +56,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 	// Fetch project author data for metadata display
 	// User might be null if deleted, so we handle that in the UI
 	const user = await getUserById(project.user_id);
+
+	const content = JSON.parse(project.content);
 
 	return (
 		<Grid className="-px-xs gap-l">
@@ -134,6 +138,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 				{/* Lead text - project summary */}
 				<Text className="text-foreground-700 mb-2xs">{project.lead}</Text>
 			</GridItem>
+			<TiptapRenderer content={content as JSONContent} />
 		</Grid>
 	);
 }
