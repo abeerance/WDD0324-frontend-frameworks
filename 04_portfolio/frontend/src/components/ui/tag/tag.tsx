@@ -43,7 +43,7 @@ export const Tag = ({ name, className, ...props }: TagProps) => {
 	return (
 		<span
 			className={cn(
-				"rounded-full text-body-small font-bold uppercase text-background-50 px-xs py-3xs",
+				"rounded-full text-body-small font-bold uppercase text-background-50 px-xs pb-3xs pt-2xs inline-flex items-center justify-center",
 				colorClass,
 				className,
 			)}

@@ -4,37 +4,52 @@ import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
 /**
- * Reusable Textarea component matching Input styling
+ * Reusable Textarea component with design system styling
  *
- * Same color system as Input but with:
- * - min-height for better UX
- * - resize-vertical to prevent horizontal stretching
- * - Larger padding for multiline content
+ * Features:
+ * - Uses OKLCH colors for consistent appearance
+ * - Responsive to validation states (invalid/valid)
+ * - Focus states with custom ring colors
+ * - Disabled states with reduced opacity
+ * - Placeholder styling
+ * - Resizable (vertical by default)
+ *
+ * Color Breakdown:
+ * - bg-background-10: Very light background (almost white)
+ * - border-background-300: Light gray border
+ * - text-foreground-900: Very dark text for readability
+ * - placeholder:text-foreground-400: Medium gray placeholder
+ *
+ * State Colors:
+ * - Focus: border-primary-500 + ring-primary-500/20 (sage green)
+ * - Invalid: border-secondary-500 + ring-secondary-500/20 (dusty rose)
+ * - Valid: border-primary-500 (sage green)
  */
-function Textarea({ className, ...props }: ComponentProps<"textarea">) {
+
+export const Textarea = ({
+	className,
+	...props
+}: ComponentProps<"textarea">) => {
 	return (
 		<textarea
 			className={cn(
-				// Base styles
+				// Base styles - applied to all textareas
 				"w-full min-w-0 rounded-md border px-s py-2xs transition-all duration-300 ease-[--ease-out-quart] outline-none",
-
-				// Textarea specific
-				"min-h-[120px] resize-vertical",
 
 				// Typography
 				"text-body font-cabinet-grotesk",
 
-				// Colors - same as Input
+				// Colors - using our design system
 				"bg-background-10 border-background-300 text-foreground-900",
 				"placeholder:text-foreground-50",
 
-				// Focus state
+				// Focus state - ring effect with primary color
 				"focus-visible:border-primary-500 focus-visible:ring-4 focus-visible:ring-primary-500/20",
 
-				// Invalid state
+				// Invalid state - red ring and border when validation fails
 				"aria-invalid:border-secondary-500 aria-invalid:ring-4 aria-invalid:ring-secondary-500/20",
 
-				// Valid state
+				// Valid state - green ring and border when validation passes
 				"aria-[invalid=false]:border-primary-500",
 
 				// Disabled state
@@ -43,15 +58,21 @@ function Textarea({ className, ...props }: ComponentProps<"textarea">) {
 				// Selection styling
 				"selection:bg-primary-200 selection:text-primary-900",
 
-				// Shadow
+				// Shadow for depth
 				"shadow-sm",
 
-				// Custom classes
+				// Resize behavior - vertical only by default
+				"resize-vertical",
+
+				// Prevent browser extension overflow
+				"relative z-0",
+
+				// Custom classes from props
 				className,
 			)}
+			data-1p-ignore
+			data-lpignore="true"
 			{...props}
 		/>
 	);
-}
-
-export { Textarea };
+};
