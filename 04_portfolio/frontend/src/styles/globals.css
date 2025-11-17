@@ -3,6 +3,23 @@
  * This must be the first import to ensure proper CSS cascade
  */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* This will apply our styles which it finds in this CSS to the TipTap Edit */
+.ProseMirror {
+	@apply prose prose-sm sm:prose lg:prose-lg xl:prose-2xl;
+	@apply focus:outline-none min-h-[400px] px-m py-s;
+}
+
+/* This will only apply the placeholder style, because tiptap has no in built placeholder for the editor */
+.ProseMirror p.is-editor-empty:first-child::before {
+	content: attr(data-placeholder);
+	color: oklch(0.558 0.01 248); /* foreground-50 */
+	pointer-events: none;
+	font-size: 14px;
+	line-height: clamp(0.9375rem, 0.8984rem + 0.1957vw, 1.05rem);
+	height: 0;
+}
 
 /**
  * Tailwind CSS v4 Theme Configuration

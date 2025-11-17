@@ -26,8 +26,18 @@ export default auth((req: NextAuthRequest) => {
   const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
   const isOnAdmin = nextUrl.pathname.startsWith("/admin");
 
-  // Protect dashboard routes - redirect to login if not authenticated
-  if (isOnDashboard && !isLoggedIn) {
+  // Check if user is trying to create or edit content
+  const isCreatingNote = nextUrl.pathname === "/notes/new";
+  const isEditingNote = /^\/notes\/[^/]+\/edit$/.test(nextUrl.pathname);
+  const isCreatingWork = nextUrl.pathname === "/work/new";
+  const isEditingWork = /^\/work\/[^/]+\/edit$/.test(nextUrl.pathname);
+
+  // Combine all protected routes
+  const protectedRoute =
+    isOnDashboard || isCreatingNote || isEditingNote || isCreatingWork || isEditingWork;
+
+  // Protect all authenticated routes - redirect to login if not authenticated
+  if (protectedRoute && !isLoggedIn) {
     return Response.redirect(new URL("/admin", nextUrl));
   }
 
