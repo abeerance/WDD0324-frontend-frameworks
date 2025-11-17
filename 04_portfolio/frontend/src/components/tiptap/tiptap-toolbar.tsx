@@ -50,12 +50,6 @@ export function TiptapToolbar({ editor, onImageUpload }: TiptapToolbarProps) {
 				icon="Italic"
 				label="Italic"
 			/>
-			<TiptapToolbarButton
-				onClick={() => editor.chain().focus().toggleCode().run()}
-				isActive={editor.isActive("code")}
-				icon="Code"
-				label="Code"
-			/>
 
 			<div className="w-px bg-foreground-200" />
 

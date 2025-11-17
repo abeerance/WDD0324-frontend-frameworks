@@ -1,32 +1,39 @@
 "use server";
 
+import { fetchApi } from "@/lib/api/api-fetch";
+
+/**
+ * API response structure from Laravel backend
+ */
+interface RegisterResponse {
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+  };
+  message?: string;
+}
+
 /**
  * Server Action: Register User
  *
- * WHY SERVER ACTIONS?
- * - Runs on the server, never exposes API credentials to client
- * - No need to create separate API route files
- * - Automatic POST request handling by Next.js
- * - Type-safe communication between client and server
+ * Handles user registration with the Laravel API backend
  *
- * FLOW:
- * 1. Client calls registerAction(formData) from RegisterForm
- * 2. Next.js sends request to server
- * 3. Server action extracts FormData and calls Laravel API
- * 4. Returns result object back to client
+ * Process:
+ * 1. Extracts form data from FormData object
+ * 2. Sends POST request to Laravel registration endpoint via fetchApi
+ * 3. Returns success with user data or detailed error
  *
- * ERROR HANDLING:
- * - API errors (400, 422, etc.): Return error message from Laravel
- * - Network errors: Return generic error message
- * - Client checks result.error to show appropriate toast
+ * Error scenarios:
+ * - API failure (422 validation, etc.): Returns API error message
+ * - Network error: Returns caught exception message
  *
- * SECURITY:
- * - API_URL stored in .env.local (never exposed to browser)
- * - "use server" directive ensures this only runs server-side
+ * @param formData - FormData containing registration fields
+ * @returns Success object with user data OR failure object with error message
  */
 export async function registerAction(formData: FormData) {
-  // Extract form fields from FormData object
-  // FormData.get() returns string | File | null
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const username = formData.get("username");
@@ -34,44 +41,30 @@ export async function registerAction(formData: FormData) {
   const password = formData.get("password");
   const password_confirmation = formData.get("password_confirmation");
 
-  try {
-    // Call Laravel API registration endpoint
-    // process.env.API_URL is only accessible server-side
-    const response = await fetch(`${process.env.API_URL}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        username,
-        email,
-        password,
-        password_confirmation,
-      }),
-    });
+  const response = await fetchApi<RegisterResponse>("auth/register", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      password_confirmation,
+    }),
+  });
 
-    // Parse JSON response from Laravel
-    const data = await response.json();
-
-    // Check if request failed (status code 400+)
-    // Laravel returns error details in data.message
-    if (!response.ok) {
-      return {
-        error: data.message || "Registration failed. Please try again",
-      };
-    }
-
-    // Success case - return success flag
-    // Client will show success toast and switch to login form
-    return { success: true };
-  } catch (error) {
-    // Network errors, JSON parse errors, or other exceptions
-    console.error("Registration error: ", error);
+  if (response.error || !response.data) {
     return {
-      error: "An unexpected error ocurred. Please try again", // Typo note: "ocurred" should be "occurred"
+      success: false,
+      error: response.error || "Registration failed. Please try again",
     };
   }
+
+  return {
+    success: true,
+    user: response.data.user,
+  };
 }

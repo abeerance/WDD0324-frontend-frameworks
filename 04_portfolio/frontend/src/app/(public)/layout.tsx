@@ -1,11 +1,12 @@
 import { Grid, GridItem } from "@/components/layout/grid/grid";
+import { Navigation } from "@/components/navigation/navigation";
 import type { ReactNode } from "react";
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
 	return (
 		<Grid className="flex flex-col min-h-dvh gap-m">
-			<GridItem span={12} className="bg-red-500">
-				<header>this is the navigation</header>
+			<GridItem span={12}>
+				<Navigation />
 			</GridItem>
 			<GridItem span={12} className="flex-1">
 				{children}

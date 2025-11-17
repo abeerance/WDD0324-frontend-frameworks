@@ -31,7 +31,7 @@ export async function fetchApi<T>(
   try {
     // Set default Content-Type, but allow it to be overridden
     const headers: HeadersInit = {
-      "Content-Type": "application/json",
+      ...(!(options.body instanceof FormData) && { "Content-Type": "application/json" }),
       ...options.headers,
     };
 

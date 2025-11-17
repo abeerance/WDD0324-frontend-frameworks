@@ -1,5 +1,6 @@
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Grid, GridItem } from "@/components/layout/grid/grid";
+import { Navigation } from "@/components/navigation/navigation";
 import { auth } from "@/lib/auth";
 import type { ReactNode } from "react";
 
@@ -30,13 +31,7 @@ export default async function DashboardLayout({
 	return (
 		<Grid className="flex flex-col min-h-dvh gap-m">
 			<GridItem span={12}>
-				<header className="flex justify-between items-center p-m border-b border-background-300">
-					<nav>Dashboard Navigation</nav>
-					<div className="flex items-center gap-m">
-						<span>Welcome, {session?.user.username}</span>
-						<SignOutButton />
-					</div>
-				</header>
+				<Navigation />
 			</GridItem>
 			<GridItem span={12} className="flex-1">
 				{children}
