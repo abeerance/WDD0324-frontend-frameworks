@@ -78,20 +78,13 @@ export function TiptapEditor({
 			const json = editor.getJSON();
 			onChange(json);
 		},
+		onCreate: ({ editor }) => {
+			console.log(
+				"EDITOR ON CREATE:",
+				JSON.stringify(editor.getJSON(), null, 2),
+			);
+		},
 	});
-
-	/**
-	 * Sync external content changes to editor
-	 * Prevents infinite loops by checking for actual content differences
-	 */
-	useEffect(() => {
-		if (editor && content) {
-			const currentContent = editor.getJSON();
-			if (JSON.stringify(currentContent) !== JSON.stringify(content)) {
-				editor.commands.setContent(content);
-			}
-		}
-	}, [editor, content]);
 
 	/**
 	 * Handle image file selection and insert preview
