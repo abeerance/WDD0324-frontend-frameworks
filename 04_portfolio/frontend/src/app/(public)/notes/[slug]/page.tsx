@@ -1,10 +1,14 @@
 import { Grid, GridItem } from "@/components/layout/grid/grid";
 import { TiptapRenderer } from "@/components/tiptap/tiptap-renderer";
 import { Tag } from "@/components/ui/tag/tag";
+import { TextLink } from "@/components/ui/text-link/text-link";
 import { Text } from "@/components/ui/text/text";
 import { getNoteBySlug, getUserById } from "@/lib/api/notes/notes";
+import { auth } from "@/lib/auth";
 import type { JSONContent } from "@tiptap/react";
+import { Edit } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 /**
@@ -47,6 +51,9 @@ export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
 	// Await params promise (Next.js 15 requirement)
 	const { slug } = await params;
 
+	// Get current session for ownership check
+	const session = await auth();
+
 	// Fetch note data using slug from URL
 	// Slug format: YYYY-MM-DD-note-title
 	const note = await getNoteBySlug(slug);
@@ -60,6 +67,10 @@ export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
 	// Fetch note author data for metadata display
 	// User might be null if deleted, so we handle that in the UI
 	const user = await getUserById(note.user_id);
+
+	// Check if current user is the note owner
+	// Because Auth.js returns the ID as a string, we need to make a number conversion to ensure that we check the same type which is in the backend
+	const isOwner = session?.user.id && Number(session.user.id) === note.user_id;
 
 	// Parse Tiptap JSON content structure into typed object
 	const content = JSON.parse(note.content) as JSONContent;
@@ -78,38 +89,47 @@ export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
 				</Text>
 
 				{/* Metadata row: Publish date and Author displayed side by side */}
-				<div className="flex gap-xl text-foreground-600 mb-m">
-					{/* Publish date: When the note was created */}
-					<div>
-						<Text
-							variant="body-small"
-							className="font-semibold text-foreground-500 uppercase"
-						>
-							Published
-						</Text>
-						<Text variant="body-small">
-							{/* Format date as "March 15, 2025" */}
-							{new Date(note.created_at).toLocaleDateString("en-US", {
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-							})}
-						</Text>
-					</div>
-
-					{/* Author: Note creator (only show if user data exists) */}
-					{user && (
+				<div className="flex justify-between">
+					<div className="flex gap-xl text-foreground-600 mb-m">
+						{/* Publish date: When the note was created */}
 						<div>
 							<Text
 								variant="body-small"
 								className="font-semibold text-foreground-500 uppercase"
 							>
-								Author
+								Published
 							</Text>
 							<Text variant="body-small">
-								{user.firstName} {user.lastName}
+								{/* Format date as "March 15, 2025" */}
+								{new Date(note.created_at).toLocaleDateString("en-US", {
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+								})}
 							</Text>
 						</div>
+
+						{/* Author: Note creator (only show if user data exists) */}
+						{user && (
+							<div>
+								<Text
+									variant="body-small"
+									className="font-semibold text-foreground-500 uppercase"
+								>
+									Author
+								</Text>
+								<Text variant="body-small">
+									{user.firstName} {user.lastName}
+								</Text>
+							</div>
+						)}
+					</div>
+					{isOwner && (
+						<Link href={`/notes/${note.slug}/edit`}>
+							<TextLink className="bg-primary-700 text-white h-l w-l inline-flex items-center justify-center rounded-md">
+								<Edit size={16} />
+							</TextLink>
+						</Link>
 					)}
 				</div>
 			</GridItem>
